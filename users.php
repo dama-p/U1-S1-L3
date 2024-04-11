@@ -26,11 +26,6 @@ $options = [
 // comando che connette al databse
 $pdo = new PDO($dsn, $user, $pass, $options);
 
-echo '<pre>' . print_r($_POST, true) . '</pre>';
-
-
-
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
     $surname = $_POST['surname'];
@@ -39,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $errors = [];
 
-    // validare i dati
+     // validare i dati
 
     if (strlen($name) > 20) {
         $errors['name'][] = 'Nome errato';
@@ -53,8 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['age'][] = 'Età errata';
     }
 
-
-
+    echo '<pre>' . print_r($errors, true) . '</pre>';
+    
   if ($errors == []) {
 
     $stmt = $pdo -> prepare("INSERT INTO Users (Name, Surname, Age) VALUES (:name, :surname, :age)");
@@ -66,13 +61,13 @@ $stmt->execute([
 ]);
 
 
-    } 
 
-    echo '<pre>' . print_r($errors, true) . '</pre>';
+};
+
+
+
 
 } ?>
-
-
 
 
 
@@ -108,7 +103,7 @@ $stmt->execute([
   </head>
   <body>
     <div id="box">
-      <form style="width: 500px">
+      <form style="width: 500px" method="post">   
         <div class="mb-3">
           <label for="name" class="form-label">Name</label>
           <input type="text" class="form-control" name="name" id="name" />
