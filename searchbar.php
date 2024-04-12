@@ -3,14 +3,25 @@ include __DIR__ . '/includes/db.php';
 
 $search = $_GET['search'] ?? '';
 
+$page = $_GET["page"] ?? 1; // numero di pagina
+$per_page = $_GET["per_page"] ?? 2; // definisco quanti elementi per pagina si avranno
+$per_page = $per_page > 10 ? 2 : $per_page; // limito gli elementi per pagina
+$offset = ($page-1) * $per_page;
+
 /* print_r($_GET); */
 
 /* $stmt = $pdo->prepare("SELECT * FROM Users WHERE Name LIKE ?"); */
 /* $stmt = $pdo->prepare("SELECT * FROM Users WHERE Name LIKE ? OR Surname LIKE ?"); */
-$stmt = $pdo->prepare("SELECT * FROM Users WHERE CONCAT(Name, Surname) LIKE ?") ;
+$stmt = $pdo->prepare("SELECT * FROM Users WHERE CONCAT(Name, Surname) LIKE :search LIMIT :per_page OFFSET :offset ") ;
 $stmt->execute([
-    "%$search%"
+   "search" => "%$search%",
+   "offset" => $offset,
+   "per_page" => $per_page,
 ]);
+
+$users = $stmt->fetchAll(); // Trasforma i risultati in un array normale
+
+$pdo->query("SELECT COUNT(*) AS Num_of_users"); // Contiami tutti gli utenti per poter calcolare le pagine
 
 
 
@@ -32,12 +43,12 @@ include __DIR__ . '/includes/navbar.php';
         </div>
     </form>
 
+
+
+<!-- INIZIO FOREACH PER LE CARD  -->
+
     <div class="row justify-content-center"><?php
-        foreach ($stmt as $row) { ?>
-
-
-
-
+        foreach ($users as $row) { ?>
 
 <div class="card col-3 col-lg-2 m-3">
   <img src="..." class="card-img-top" alt="...">
@@ -56,7 +67,7 @@ include __DIR__ . '/includes/navbar.php';
 
 <!--    VARIANTE CON LA LISTA
  <ul><?php
-        foreach ($stmt as $row) { ?>
+        foreach ($users as $row) { ?>
 
             <li class="mb-3">
                 <?= "$row[id] - $row[Name] - $row[Surname] - $row[Age]" ?>
