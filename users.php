@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['age'][] = 'Età errata';
     }
 
-    echo '<pre>' . print_r($errors, true) . '</pre>';
+/*     echo '<pre>' . print_r($errors, true) . '</pre>'; */
     
   if ($errors == []) {
 
@@ -102,6 +102,10 @@ $stmt->execute([
     </style>
   </head>
   <body>
+
+  <?= include __DIR__ . '/includes/navbar.php'; ?>
+
+
     <div id="box">
       <form style="width: 500px" method="post">   
         <div class="mb-3">
@@ -114,7 +118,7 @@ $stmt->execute([
         </div>
         <div class="mb-3">
           <label for="age" class="form-label">Age</label>
-          <input type="text" class="form-control" name="age" id="age" />
+          <input type="number" class="form-control" name="age" id="age" />
         </div>
  
 
