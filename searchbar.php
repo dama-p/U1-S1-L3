@@ -4,8 +4,8 @@ include __DIR__ . '/includes/db.php';
 $search = $_GET['search'] ?? '';
 
 $page = $_GET["page"] ?? 1; // numero di pagina
-$per_page = $_GET["per_page"] ?? 2; // definisco quanti elementi per pagina si avranno
-$per_page = $per_page > 10 ? 2 : $per_page; // limito gli elementi per pagina
+$per_page = $_GET["per_page"] ?? 10; // definisco quanti elementi per pagina si avranno
+$per_page = $per_page > 10 ? 10 : $per_page; // limito gli elementi per pagina
 $offset = ($page-1) * $per_page;
 
 /* print_r($_GET); */
@@ -21,8 +21,12 @@ $stmt->execute([
 
 $users = $stmt->fetchAll(); // Trasforma i risultati in un array normale
 
-$pdo->query("SELECT COUNT(*) AS Num_of_users"); // Contiami tutti gli utenti per poter calcolare le pagine
-
+$stmt = $pdo->prepare("SELECT COUNT(*) AS num_of_users FROM Users WHERE CONCAT(Name, Surname) LIKE :search"); // Contiami tutti gli utenti per poter calcolare le pagine
+$stmt->execute([
+    'search' => "%$search%",
+]);
+$num_of_users = $stmt->fetch()['num_of_users'];
+$tot_pages = ceil($num_of_users / $per_page);
 
 
 include __DIR__ . '/includes/initial.php';
@@ -50,7 +54,7 @@ include __DIR__ . '/includes/navbar.php';
     <div class="row justify-content-center"><?php
         foreach ($users as $row) { ?>
 
-<div class="card col-3 col-lg-2 m-3">
+<div class="card col-5 col-md-3 col-lg-2 m-3">
   <img src="..." class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title"><?=  "$row[Name]" ?></h5>
