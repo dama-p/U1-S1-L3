@@ -36,7 +36,7 @@ include __DIR__ . '/includes/navbar.php';
 
     <form class="row gap-3">
         <div class="col">
-            <input type="text" name="search" class="form-control" placeholder="Cerca una pizza">
+            <input type="text" name="search" class="form-control" placeholder="Cerca un utente">
         </div>
         <div class="col-auto">
             <button type="submit" class="btn btn-primary mb-3">Cerca</button>
@@ -56,6 +56,7 @@ include __DIR__ . '/includes/navbar.php';
     <h5 class="card-title"><?=  "$row[Name]" ?></h5>
     <p class="card-text"><?=  "$row[Surname] - $row[Age] " ?></p>
     <a href="/FSD%20IFOA/U1-S1-L3/dettagli.php?id=<?= $row['id'] ?>" class="btn btn-primary">Vai</a>
+    <a href="/FSD%20IFOA/U1-S1-L3/edit.php?id=<?= $row['id'] ?>" class="btn btn-warning">Edit</a>
                 <a href="/FSD%20IFOA/U1-S1-L3/elimina.php?id=<?= $row['id'] ?>" class="btn btn-danger">Elimina</a>
   </div>
 </div>
@@ -81,17 +82,28 @@ include __DIR__ . '/includes/navbar.php';
 
 
     <nav>
-        <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link">Previous</a>
-            </li>
+    <ul class="pagination justify-content-center">
+            <li class="page-item<?= $page == 1 ? ' disabled' : '' ?>">
+                <a
+                    class="page-link"
+                    href="/FSD%20IFOA/U1-S1-L3/searchbar.php/?page=<?= $page - 1 ?><?= $search ? "&search=$search" : '' ?>"
+                >Previous</a>
+            </li><?php
 
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-
-            <li class="page-item">
-                <a class="page-link" href="#">Next</a>
+                for ($i=1; $i <= $tot_pages; $i++) { ?>
+                    <li class="page-item<?= $page == $i ? ' active': '' ?>">
+                        <a
+                            class="page-link"
+                            href="/FSD%20IFOA/U1-S1-L3/searchbar.php/?page=<?= $i ?><?= $search ? "&search=$search" : '' ?>"
+                        ><?= $i ?></a>
+                    </li><?php
+                } ?>
+            
+            <li class="page-item<?= $page == $tot_pages ? ' disabled' : '' ?>">
+                <a
+                    class="page-link"
+                    href="/FSD%20IFOA/U1-S1-L3/searchbar.php/?page=<?= $page + 1 ?><?= $search ? "&search=$search" : '' ?>"
+                >Next</a>
             </li>
         </ul>
     </nav>

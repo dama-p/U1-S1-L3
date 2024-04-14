@@ -60,17 +60,10 @@ $stmt->execute([
     "age" => $age,
 ]);
 
-
-
 };
 
 
-
-
 } ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
