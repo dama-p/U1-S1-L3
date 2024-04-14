@@ -59,7 +59,7 @@ include __DIR__ . '/includes/navbar.php';
   <div class="card-body">
     <h5 class="card-title"><?=  "$row[Name]" ?></h5>
     <p class="card-text"><?=  "$row[Surname] - $row[Age] " ?></p>
-    <a href="/FSD%20IFOA/U1-S1-L3/dettagli.php?id=<?= $row['id'] ?>" class="btn btn-primary">Vai</a>
+    <a href="/FSD%20IFOA/U1-S1-L3/dettagli.php?id=<?= $row['id'] ?>" class="btn btn-primary">Dettagli</a>
     <a href="/FSD%20IFOA/U1-S1-L3/edit.php?id=<?= $row['id'] ?>" class="btn btn-warning">Edit</a>
                 <a href="/FSD%20IFOA/U1-S1-L3/elimina.php?id=<?= $row['id'] ?>" class="btn btn-danger">Elimina</a>
   </div>
